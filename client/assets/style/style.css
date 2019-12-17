@@ -1,0 +1,43 @@
+
+@font-face {
+    font-family: TT_Norms_bold;
+    src: url(../font/TTNorms-Bold.woff);
+}
+@font-face {
+    font-family: TT Norms;
+    src: url(../font/TTNorms-Regular.woff);
+}
+body{
+    font-family: TT Norms;
+    min-height: 100%;
+    background: #ffffff;
+}
+.theme--light.v-application{
+    background: #ffffff  !important;
+}
+.my_icon {
+    max-height: 18px;
+    max-width: 18px;
+    margin: 10px 10px;
+}
+.bold{
+    font-family: TT_Norms_bold;
+}
+.v-slide-group__prev--disabled{
+    display: none !important;
+}
+@media (max-width: 600px) {
+    .footer_padding {
+
+        padding-bottom: 100px;
+    }
+
+}
+
+@media (min-width: 600px) {
+    .footer_padding {
+
+        padding-bottom: 100px;
+    }
+
+}
