@@ -27,8 +27,11 @@
                                 hide-delimiters
                                 height="100%" >
                         <v-carousel-item v-for="item in bar.photo"
+                                         ripple
+                                         :ket="item.id"
                                          :src="'http://185.22.61.189:1337'+item.url"
-                        ></v-carousel-item >
+                        >
+                        </v-carousel-item >
                         <v-carousel-item v-if="bar.photo.length == 0 "
                         >
                             <v-sheet
@@ -51,7 +54,7 @@
                         <v-card
 
                         >
-                            <v-list disabled >
+                            <v-list  >
                                 <v-list-item-group >
                                     <v-list-item >
                                         <v-list-item-icon >
@@ -63,8 +66,6 @@
                                                 <path d="M20 5.99015C20 5.90433 19.9796 5.8226 19.9346 5.74904L16.9595 0.518145C16.8737 0.366939 16.7103 0.26886 16.5345 0.26886H3.46138C3.28566 0.26886 3.12219 0.362853 3.03637 0.518145L0.0653862 5.74904C0.0245198 5.8226 0 5.90433 0 5.99015C0 7.16302 0.706988 8.16833 1.71639 8.61377V17.2407C1.71639 17.5104 1.93707 17.7311 2.20678 17.7311H4.91622C4.92031 17.7311 4.9244 17.7311 4.92848 17.7311H8.72906C8.73314 17.7311 8.73723 17.7311 8.74132 17.7311H17.7891C18.0588 17.7311 18.2795 17.5104 18.2795 17.2407V8.67507C18.2795 8.65464 18.2795 8.63829 18.2754 8.62195C19.2889 8.1765 20 7.1671 20 5.99015ZM3.74745 1.25374H16.2485L18.5738 5.34446H1.42624L3.74745 1.25374ZM14.2338 6.32117C14.0785 7.20388 13.3061 7.87409 12.3784 7.87409C11.4508 7.87409 10.6784 7.20388 10.5231 6.32117H14.2338ZM9.481 6.32117C9.32571 7.20388 8.55333 7.87409 7.62566 7.87409C6.698 7.87409 5.92562 7.20388 5.76624 6.32117H9.481ZM1.01349 6.32117H4.72824C4.57295 7.20388 3.79649 7.87409 2.86882 7.87409C1.94115 7.87818 1.16878 7.20388 1.01349 6.32117ZM8.23866 16.7503H5.41888V11.4581C5.41888 11.0739 5.72946 10.7593 6.11769 10.7593H7.54393C7.92808 10.7593 8.24275 11.0698 8.24275 11.4581V16.7503H8.23866ZM17.2987 16.7503H9.21945V11.4581C9.21945 10.5345 8.46751 9.77846 7.53984 9.77846H6.11361C5.19003 9.77846 4.434 10.5304 4.434 11.4581V16.7544H2.69718V8.85488C2.75439 8.85897 2.81161 8.85897 2.86882 8.85897C3.85778 8.85897 4.73233 8.35631 5.24724 7.59211C5.76216 8.35631 6.6367 8.85897 7.62566 8.85897C8.61463 8.85897 9.48508 8.35631 10.0041 7.59211C10.519 8.35631 11.3935 8.85897 12.3784 8.85897C13.3674 8.85897 14.2378 8.35631 14.7528 7.59211C15.2677 8.35631 16.1422 8.85897 17.1312 8.85897C17.1884 8.85897 17.2415 8.85488 17.2987 8.85488V16.7503ZM17.1312 7.87818C16.2035 7.87818 15.4311 7.20797 15.2758 6.32526H18.9906C18.8312 7.20388 18.0588 7.87818 17.1312 7.87818Z"
                                                       fill="#464646" />
                                             </svg >
-
-
 
                                         </v-list-item-icon >
                                         <v-list-item-content >
@@ -92,7 +93,7 @@
                                         </v-list-item-content >
                                     </v-list-item >
                                     <v-divider ></v-divider >
-                                    <v-list-item >
+                                    <v-list-item @click="call('+7 (3952) '+bar.phone)">
                                         <v-list-item-icon >
 
                                             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
@@ -103,8 +104,9 @@
                                             </svg >
                                         </v-list-item-icon >
                                         <v-list-item-content >
-                                            <v-list-item-title v-text="'+7 (3952) '+bar.phone" >
+                                            <v-list-item-title  >
 
+                                                {{'+7 (3952) '+bar.phone}}
                                             </v-list-item-title >
 
                                         </v-list-item-content >
@@ -151,7 +153,7 @@
                             <v-card
 
                             >
-                                <v-list disabled >
+                                <v-list >
                                     <v-list-item-group >
                                         <v-list-item >
                                             <v-list-item-icon >
@@ -171,7 +173,7 @@
                                             </v-list-item-content >
                                         </v-list-item >
                                         <v-divider ></v-divider >
-                                        <v-list-item >
+                                        <v-list-item @click="call('+7 (3952) '+bar.phone)">
                                             <v-list-item-icon >
 
                                                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
@@ -236,7 +238,7 @@
                         <v-card
 
                         >
-                            <v-list disabled >
+                            <v-list >
                                 <v-list-item-group >
                                     <v-list-item >
                                         <v-list-item-icon >
@@ -256,7 +258,7 @@
                                         </v-list-item-content >
                                     </v-list-item >
                                     <v-divider ></v-divider >
-                                    <v-list-item >
+                                    <v-list-item @click="call('+7 (3952) '+bar.phone)">
                                         <v-list-item-icon >
 
                                             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
@@ -267,8 +269,8 @@
                                             </svg >
                                         </v-list-item-icon >
                                         <v-list-item-content >
-                                            <v-list-item-title v-text="'+7 (3952) '+bar.phone" >
-
+                                            <v-list-item-title >
+                                                    {{'+7 (3952) '+bar.phone}}
                                             </v-list-item-title >
 
                                         </v-list-item-content >
@@ -338,6 +340,13 @@
             onResize() {
                 this.windowSize = {x: window.innerWidth, y: window.innerHeight}
             },
+            cleanPhone(dirty_phone){
+
+                return dirty_phone.replace(/\D/g,'')
+            },
+            call(phone){
+                document.location.href = 'tel:+' +this.cleanPhone(phone)
+            }
         },
         computed: {
             placemarks() {

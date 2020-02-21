@@ -426,7 +426,11 @@
             change_bar(bar) {
 
                 this.$router.push('/bar/' + bar.id)
-            }
+            },
+            cleanPhone(dirty_phone){
+
+                return dirty_phone.replace(/\D/,'')
+            },
         },
         computed: {
             active_bar() {
