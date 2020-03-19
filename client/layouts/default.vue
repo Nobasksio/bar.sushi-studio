@@ -15,32 +15,31 @@
 <script >
     import topMenu from './top-menu'
     import myFooter from './footer'
-    const axios = require('axios').default;
+
     export default {
         name: "default.vue",
         components: {
             topMenu,
             myFooter
         },
-        data(){
+        data () {
             return {
                 bars:[{Name:'',phone:''}]
             }
         },
-        computed:{
-            show_bar(){
-                if (this.$route.name =='bar-id' || this.$route.name =='index'){
-                    return true
-                }
-
-                return false
+        computed: {
+            show_bar () {
+                return this.$route.name === 'bar-id' || this.$route.name === 'index' || this.$route.name === 'bar-id-page_name';
             }
         },
-        mounted: function(){
-            axios.get(`http://185.22.61.189:1337/bars/`)
-                .then((res) => {
-                    this.bars = res.data;
+        mounted () {
+            this.$store.dispatch('fetchBars')
+                .then(response => {
+                    this.bars = response.data;
                 })
+                .catch(error => {
+                    throw error
+                });
         }
     }
 </script >

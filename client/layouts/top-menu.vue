@@ -405,7 +405,7 @@
 </template >
 
 <script >
-
+    import { mapGetters } from 'vuex'
     import SocialMedia from "./social-media";
 
     export default {
@@ -424,15 +424,14 @@
                 this.bar_drawer = !this.bar_drawer
             },
             change_bar(bar) {
-
-                this.$router.push('/bar/' + bar.id)
+                this.$router.push(`/bar/${bar.id}/${this.getPageBar}`)
             },
             cleanPhone(dirty_phone){
-
                 return dirty_phone.replace(/\D/,'')
             },
         },
         computed: {
+            ...mapGetters(['getPageBar']),
             active_bar() {
                 let bar = this.bars.filter((item) => {
                     return item.id == this.$route.params.id

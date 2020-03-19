@@ -4,21 +4,19 @@
             <left-menu :bars="bars"
                        :active="active"
                        page="bar"
-            ></left-menu >
+                       @changeActive="setActive"
+            ></left-menu>
             <div class="right_part_page" >
                 <rest-menu :bar="active_bar" :bars="bars"></rest-menu >
-                <v-content >
-                </v-content >
             </div >
         </div >
     </v-container >
 </template >
 
 <script >
-    import leftMenu from '../../../layouts/left-menu'
-    import restMenu from '../../../components/bar/rest-menu'
-    import myToast from '../../../components/my-toast'
-    // import myFooter from './footer'
+    import leftMenu from '@/layouts/left-menu'
+    import restMenu from '@/components/bar/rest-menu'
+    import myToast from '@/components/my-toast'
     const axios = require('axios').default;
     export default {
         name: "index",
@@ -29,8 +27,8 @@
         },
         data(){
             return {
-                bars:[],
-                active:this.$route.params.id
+                bars: [],
+                active: this.$route.params.id
             }
         },
         asyncData ({ params }) {
@@ -38,6 +36,9 @@
                 .then((res) => {
                     return { bars: res.data }
                 })
+        },
+        created() {
+            this.$router.back()
         },
         computed:{
             active_bar: function () {
@@ -57,6 +58,11 @@
                 ]
             }
         },
+        methods: {
+            setActive (id) {
+                this.active = id
+            }
+        }
     }
 </script >
 

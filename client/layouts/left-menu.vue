@@ -39,23 +39,24 @@
                             :key="i"
                             link
                             :class="{'grey lighten-4': active == item.id }"
-                            :to="'/bar/'+item.id"
+                            :to="`/bar/${item.id}/${getPageBar}`"
                     >
                         <v-list-icon v-if="mini" >
-
                                 <div class="d-flex align-center">
                                     <v-avatar :color="checkColor(item.id)" size="28" >
                                         <span class="white--text caption" >{{ item.avatar }}</span >
                                     </v-avatar >
                                 </div >
-
                         </v-list-icon >
-                        <v-list-item-content @click="active = item.id" v-if="!mini" >
+                        <v-list-item-content
+                                else
+                                @click="setActiveItem(item.id)"
+                        >
                             <v-list-item-title class="d-flex align-center" >
                                 <div class="cicle" :class="{'cicle_active':active == item.id }" ></div >
                                 <div class="" >
                                     <div >
-                                        {{ item.Name }}
+                                        {{ item.Name + getPageBar }}
                                     </div >
                                     <div class="font-weight-bold" >
                                         {{ item.phone }}
@@ -134,33 +135,34 @@
     </div >
 </template >
 
-<script >
+<script>
+    import { mapGetters } from 'vuex'
     const axios = require('axios').default;
+
     export default {
         name: "left-menu",
         props: ['active','page'],
+        data: () => ({
+            mini: false,
+            drawer: true,
+            bars: [],
+            windowSize: {
+                x: 0,
+                y: 0,
+            }
+        }),
         mounted() {
             axios.get(`http://185.22.61.189:1337/bars/`)
                 .then((res) => {
-                    this.bars = res.data
+                    this.bars = res.data;
                 })
+                .catch(err => {
+                    throw err
+                })
+            /*console.log(window.innerWidth)
+            if (window.innerWidth < 1200) this.mini = true
+            else this.mini = false*/
 
-            console.log(window.innerWidth)
-                if (window.innerWidth < 1200) this.mini = true
-                else this.mini = false
-
-        },
-        data() {
-            return {
-                mini: false,
-                drawer: true,
-                bars: [],
-                mini:false,
-                windowSize: {
-                    x: 0,
-                    y: 0,
-                },
-            }
         },
         methods:{
             checkColor(id){
@@ -170,9 +172,13 @@
             onResize () {
                 this.windowSize = { x: window.innerWidth, y: window.innerHeight }
             },
-
+            setActiveItem (id) {
+                this.$emit('changeActive', id)
+            }
         },
-
+        computed: {
+            ...mapGetters(['getPageBar'])
+        }
     }
 </script >
 
