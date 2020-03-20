@@ -56,7 +56,7 @@
                                 <div class="cicle" :class="{'cicle_active':active == item.id }" ></div >
                                 <div class="" >
                                     <div >
-                                        {{ item.Name + getPageBar }}
+                                        {{ item.Name }}
                                     </div >
                                     <div class="font-weight-bold" >
                                         {{ item.phone }}
@@ -137,7 +137,6 @@
 
 <script>
     import { mapGetters } from 'vuex'
-    const axios = require('axios').default;
 
     export default {
         name: "left-menu",
@@ -145,24 +144,13 @@
         data: () => ({
             mini: false,
             drawer: true,
-            bars: [],
             windowSize: {
                 x: 0,
                 y: 0,
             }
         }),
-        mounted() {
-            axios.get(`http://185.22.61.189:1337/bars/`)
-                .then((res) => {
-                    this.bars = res.data;
-                })
-                .catch(err => {
-                    throw err
-                })
-            /*console.log(window.innerWidth)
-            if (window.innerWidth < 1200) this.mini = true
-            else this.mini = false*/
-
+        async fetch ({ store }) {
+            await store.dispatch('fetchBars')
         },
         methods:{
             checkColor(id){
@@ -177,7 +165,7 @@
             }
         },
         computed: {
-            ...mapGetters(['getPageBar'])
+            ...mapGetters(['getPageBar', 'bars'])
         }
     }
 </script >

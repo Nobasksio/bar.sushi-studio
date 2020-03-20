@@ -6,17 +6,14 @@ export default {
         bars: []
     },
     actions: {
-        fetchBars ({ commit }) {
-            return new Promise((resolve, reject) => {
-                axios.get(`http://185.22.61.189:1337/bars/`)
-                    .then(response => {
-                        commit('setBars', response.data);
-                        resolve(response)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            });
+        async fetchBars ({ commit, getters }) {
+            try {
+                const bars = await axios.get(`${getters.getBaseUrl}/bars/`);
+                const result = await bars.data;
+                commit('setBars', result)
+            } catch (e) {
+                throw e
+            }
         }
     },
     mutations: {
@@ -29,8 +26,6 @@ export default {
     },
     getters: {
         getPageBar: state => state.activePageTopMenu,
-        bars (state) {
-            return state.bars
-        }
+        bars: state => state.bars
     }
 }

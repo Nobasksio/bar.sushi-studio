@@ -3,7 +3,7 @@
         <div class="page_area d-flex" >
             <left-menu
                 :bars="bars"
-                :active="active"
+                :active="barActiveId"
                 :page="'bar'"
                 @changeActive="setActive"
             ></left-menu>
@@ -33,8 +33,7 @@
 </template>
 
 <script>
-    const axios = require('axios').default;
-    import { mapMutations, mapActions } from 'vuex'
+    import { mapMutations, mapGetters } from 'vuex'
     import leftMenu from '@/layouts/left-menu'
     import photoComponent from '@/components/bar/photoComponent'
     import mapComponent from '@/components/bar/mapComponent'
@@ -48,13 +47,13 @@
         },
         data () {
             return {
-                bars: [],
                 currentPage: 'photoComponent',
-                active: this.$route.params.id
+                barActiveId: this.$route.params.id,
+                pages: ['camera', 'photo', 'map', 'menu']
             }
         },
         created () {
-            if (this.$route.params.page_name === 'camera' || this.$route.params.page_name === 'photo' || this.$route.params.page_name === 'map' || this.$route.params.page_name === 'menu') {
+            if (this.pages.includes(this.$route.params.page_name)) {
                 if (this.$route.params.page_name === 'camera') {
                     if (!this.active_bar.camera) {
                         this.$router.push(`/bar/${this.active}/photo`)
@@ -64,37 +63,35 @@
                 this.$router.back()
             }
         },
-        asyncData () {
-            return axios.get(`http://185.22.61.189:1337/bars/`)
-                .then((res) => {
-                    return { bars: res.data }
-                })
+        async fetch ({ store }) {
+            await store.dispatch('fetchBars')
         },
         computed: {
+            ...mapGetters(['bars']),
             active_bar () {
-                return this.bars.filter(item => item.id == this.active)[0]
+                return this.bars.filter(item => item.id == this.barActiveId)[0]
             },
             currentPageComponent () {
                 return this.currentPage = this.$route.params.page_name + 'Component'
             },
             url () {
-                return `/bar/${this.active}`
+                return `/bar/${this.barActiveId}`
             }
         },
         head () {
             return {
-                title: this.active_bar.Name+' Суши-Бар Sushi-Studio Иркутск Японская кухня. Суши и роллы.',
+                title: `${this.active_bar.Name} Суши-Бар Sushi-Studio Иркутск Японская кухня. Суши и роллы.`,
                 meta: [
                     { charset: 'utf-8' },
                     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                    { hid: 'description', name: 'description', content: this.active_bar.Name+' Уютные японские суши бары в Иркутске. Вкусная атмосфера классической и современной японии. Японская кухня, бизнес-ланч, Роллы, суши, сеты. ' }
+                    { hid: 'description', name: 'description', content: `${this.active_bar.Name} Уютные японские суши бары в Иркутске. Вкусная атмосфера классической и современной японии. Японская кухня, бизнес-ланч, Роллы, суши, сеты.` }
                 ]
             }
         },
         methods: {
             ...mapMutations(['setActivePageTopMenu']),
             setActive (id) {
-                this.active = id
+                this.barActiveId = id
             },
             setActivePage (value) {
                 this.setActivePageTopMenu(value)

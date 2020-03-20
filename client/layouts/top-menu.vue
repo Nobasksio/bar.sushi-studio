@@ -48,12 +48,10 @@
                                 Суши-бар
                             </div >
                             <div class="gold" >
-                                {{ active_bar.Name}}
-
+                                {{ active_bar.Name }}
                             </div >
                             <div class="gold bold" >
-                                {{ active_bar.phone}}
-
+                                {{ active_bar.phone }}
                             </div >
                         </v-col >
                         <v-col cols="auto" >
@@ -75,6 +73,7 @@
                     <v-list >
                         <v-list-item-group color="primary" >
                             <v-list-item
+                                    v-if="bars.length"
                                     v-for="(bar, i) in bars"
                                     :key="i"
                                     @click="change_bar(bar)"
@@ -411,8 +410,17 @@
     export default {
         name: "top-menu",
         components: {SocialMedia},
-        props: ['bars', 'show_bar'],
-        data() {
+        props: {
+            bars: {
+                type: Array,
+                required: true
+            },
+            show_bar: {
+                type: Boolean,
+                required: true
+            }
+        },
+        data () {
             return {
                 drawer: false,
                 bar_drawer: false,
@@ -432,18 +440,16 @@
         },
         computed: {
             ...mapGetters(['getPageBar']),
-            active_bar() {
-                let bar = this.bars.filter((item) => {
-                    return item.id == this.$route.params.id
-                })
+            active_bar () {
+                let bar = this.bars.filter(item => item.id == this.$route.params.id);
 
-                if (bar.length == 0) {
-                    return this.bars[0]
+                if (!bar.length) {
+                    console.log('barss', this.bars);
+                    return {Name:'',phone:''}
                 }
+
                 return bar[0]
             }
-
-
         }
     }
 </script >
