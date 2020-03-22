@@ -28,7 +28,7 @@
                                 height="100%" >
                         <v-carousel-item v-for="item in bar.photo"
                                          ripple
-                                         :ket="item.id"
+                                         :key="item.id"
                                          :src="'http://185.22.61.189:1337'+item.url"
                         >
                         </v-carousel-item >
@@ -51,9 +51,7 @@
                         </v-carousel-item >
                     </v-carousel >
                     <div class=" d-md-none d-block mb-10">
-                        <v-card
-
-                        >
+                        <v-card>
                             <v-list  >
                                 <v-list-item-group >
                                     <v-list-item >
@@ -93,7 +91,7 @@
                                         </v-list-item-content >
                                     </v-list-item >
                                     <v-divider ></v-divider >
-                                    <v-list-item @click="call('+7 (3952) '+bar.phone)">
+                                    <v-list-item @click="call('+7 (39522222) '+bar.phone)">
                                         <v-list-item-icon >
 
                                             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"
@@ -318,8 +316,7 @@
     </div >
 </template >
 
-<script >
-
+<script>
     export default {
         name: "rest-menu",
         props: ['bar', 'bars'],
@@ -334,7 +331,7 @@
             }
         },
         mounted() {
-            this.onResize()
+            this.onResize();
         },
         methods: {
             onResize() {
