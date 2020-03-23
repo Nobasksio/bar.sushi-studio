@@ -1,23 +1,24 @@
-<template >
-    <v-row >
-        <template v-for="item in promos" >
-            <promo-list-item :promo="item" ></promo-list-item >
-        </template >
-    </v-row >
-</template >
+<template>
+    <v-row>
+        <template v-for="item in promos">
+            <promo-list-item :promo="item" ></promo-list-item>
+        </template>
+    </v-row>
+</template>
 
 <script >
-    import promoListItem from '../../components/promotion/promo-list-item'
+    import promoListItem from '@/components/promotion/promo-list-item'
 
     export default {
         name: "promo-list",
         components: {
             promoListItem
         },
-        props: ['promos']
+        props: {
+            promos: {
+                type: Array,
+                required: true
+            }
+        }
     }
 </script >
-
-<style scoped >
-
-</style >

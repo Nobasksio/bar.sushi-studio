@@ -48,12 +48,10 @@
                                 Суши-бар
                             </div >
                             <div class="gold" >
-                                {{ active_bar.Name}}
-
+                                {{ active_bar.Name }}
                             </div >
                             <div class="gold bold" >
-                                {{ active_bar.phone}}
-
+                                {{ active_bar.phone }}
                             </div >
                         </v-col >
                         <v-col cols="auto" >
@@ -75,6 +73,7 @@
                     <v-list >
                         <v-list-item-group color="primary" >
                             <v-list-item
+                                    v-if="bars.length"
                                     v-for="(bar, i) in bars"
                                     :key="i"
                                     @click="change_bar(bar)"
@@ -405,14 +404,23 @@
 </template >
 
 <script >
-
+    import { mapGetters } from 'vuex'
     import SocialMedia from "./social-media";
 
     export default {
         name: "top-menu",
         components: {SocialMedia},
-        props: ['bars', 'show_bar'],
-        data() {
+        props: {
+            bars: {
+                type: Array,
+                required: true
+            },
+            show_bar: {
+                type: Boolean,
+                required: true
+            }
+        },
+        data () {
             return {
                 drawer: false,
                 bar_drawer: false,
@@ -424,27 +432,27 @@
                 this.bar_drawer = !this.bar_drawer
             },
             change_bar(bar) {
-
-                this.$router.push('/bar/' + bar.id)
+                this.$router.push(`/bar/${bar.id}/${this.getPageBar}`)
             },
             cleanPhone(dirty_phone){
-
                 return dirty_phone.replace(/\D/,'')
-            },
+            }
         },
         computed: {
-            active_bar() {
-                let bar = this.bars.filter((item) => {
-                    return item.id == this.$route.params.id
-                })
+            ...mapGetters(['getPageBar']),
+            active_bar () {
+                if (this.bars.length) {
+                    const bar = this.bars.filter(item => item.id === +this.$route.params.id);
 
-                if (bar.length == 0) {
-                    return this.bars[0]
+                    if (!bar.length) {
+                        return this.bars[0]
+                    }
+
+                    return bar[0]
                 }
-                return bar[0]
+
+                return { Name: '', phone: '' }
             }
-
-
         }
     }
 </script >

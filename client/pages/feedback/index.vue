@@ -13,7 +13,7 @@
                     <h1 class="bold pl-md-2 pl-5 d-none d-md-block" >
                         Отзывы
                     </h1 >
-                    <template v-for="item in show_fedbacks">
+                    <template v-for="item in show_feedbacks">
                         <feedback-item :feedback="item"></feedback-item >
                         <v-divider class="d-block d-md-none"></v-divider>
                     </template>
@@ -35,11 +35,11 @@
 </template >
 
 <script >
-    import leftMenu from '../../layouts/left-menu'
-    import feedbackItem from '../../components/feedback/feedback-item'
-    import feedbackForm from '../../components/feedback/feed-back-form'
+    import { mapGetters } from 'vuex'
+    import leftMenu from '@/layouts/left-menu'
+    import feedbackItem from '@/components/feedback/feedback-item'
+    import feedbackForm from '@/components/feedback/feed-back-form'
 
-    const axios = require('axios').default;
     export default {
         name: "index",
         components: {
@@ -49,27 +49,17 @@
         },
         data () {
             return {
-                feedbacks:[],
-                bars:[],
-                show_num:3,
+                show_num: 3,
             }
         },
-        async asyncData ({ params }) {
-            const bars = await axios.get(`http://185.22.61.189:1337/bars?active=True`)
-            const feedback = await axios.get(`http://185.22.61.189:1337/feedbacks?active=True`)
-
-            return {
-                feedbacks: feedback.data,
-                bars: bars.data,
-            }
-
+        async fetch ({ store }) {
+            await store.dispatch('fetchBars', '?active=True');
+            await store.dispatch('fetchFeedback', '?active=True')
         },
-        methods:{
-        },
-        computed:{
-            show_fedbacks(){
-                let feedbacks_return = this.feedbacks.slice(0,this.show_num)
-                return feedbacks_return
+        computed: {
+            ...mapGetters(['bars', 'getFeedbaks']),
+            show_feedbacks () {
+                return this.getFeedbaks.slice(0, this.show_num)
             }
         }
     }

@@ -1,43 +1,68 @@
 <template >
     <v-container class="px-lg-2 px-0 pt-lg-2 pt-0">
         <div class="page_area d-flex" >
-            <left-menu :bars="bars"
-                       :active="active"
-                       page="bar"
-            ></left-menu >
-            <div class="right_part_page" >
-                <rest-menu :bar="active_bar" :bars="bars"></rest-menu >
-                <v-content >
-                </v-content >
-            </div >
+            <left-menu
+                    :bars="bars"
+                    :active="barActiveId"
+                    :page="'bar'"
+                    @changeActive="setActive"
+            ></left-menu>
+            <div class="right_part_page">
+                <div class="bar-menu">
+                    <li v-if="active_bar.photo.length">
+                        <v-list-item link :to="url + '/photo'" @click="setActivePage('photo')">Фото</v-list-item>
+                    </li>
+                    <li v-if="active_bar.camera">
+                        <v-list-item link :to="url + '/camera'" @click="setActivePage('camera')">Камера</v-list-item>
+                    </li>
+                    <li>
+                        <v-list-item link :to="url + '/map'" @click="setActivePage('map')">Карта</v-list-item>
+                    </li>
+                    <li v-if="active_bar.menu">
+                        <v-list-item link :to="url + '/menu'" @click="setActivePage('menu')">Меню</v-list-item>
+                    </li>
+                </div>
+                <component
+                        :is="currentPage"
+                        :bar="active_bar"
+                        :bars="bars"
+                ></component>
+            </div>
         </div >
     </v-container >
 </template >
 
-<script >
-    import leftMenu from '../layouts/left-menu'
-    import restMenu from '../components/bar/rest-menu'
-    import myToast from '../components/my-toast'
-    // import myFooter from './footer'
-    const axios = require('axios').default;
+<script>
+    import { mapMutations, mapGetters } from 'vuex'
+    import leftMenu from '@/layouts/left-menu'
+    import photoComponent from '@/components/bar/photoComponent'
+    import mapComponent from '@/components/bar/mapComponent'
+    import menuComponent from '@/components/bar/menuComponent'
+    import cameraComponent from '@/components/bar/cameraComponent'
+
     export default {
         name: "index",
         components: {
-            leftMenu,
-            restMenu,
-            myToast
+            leftMenu, photoComponent, mapComponent, menuComponent, cameraComponent
         },
-        data(){
+        data () {
             return {
-                bars:[],
-                active:1
+                currentPage: 'photoComponent',
+                barActiveId: 1,
+                pages: ['camera', 'photo', 'map', 'menu']
             }
         },
-        asyncData ({ params }) {
-            return axios.get(`http://185.22.61.189:1337/bars/`)
-                .then((res) => {
-                    return { bars: res.data }
-                })
+        async fetch ({ store }) {
+            await store.dispatch('fetchBars')
+        },
+        computed: {
+            ...mapGetters(['bars']),
+            active_bar () {
+                return this.bars.filter(item => item.id === +this.barActiveId)[0]
+            },
+            url () {
+                return `/bar/${this.barActiveId}`
+            }
         },
         head () {
             return {
@@ -49,24 +74,42 @@
                 ]
             }
         },
-        computed:{
-            active_bar: function () {
-                const bar = this.bars.filter((item)=>{
-                    return item.id == this.active
-                })
-                return bar[0]
+        methods: {
+            ...mapMutations(['setActivePageTopMenu']),
+            setActive (id) {
+                this.barActiveId = id
+            },
+            setActivePage (value) {
+                this.setActivePageTopMenu(value)
             }
-
         }
     }
-</script >
+</script>
 
-<style scoped >
+<style scoped>
     .vh-100 {
         height: 100vh;
     }
-
     .right_part_page {
         width: 100%;
+    }
+    .bar-menu li {
+        display: inline-block;
+    }
+    .bar-menu li a {
+        display: block;
+        color: rgba(0, 0, 0, 0.54);
+        font-weight: 500;
+        padding: 15px 20px;
+    }
+    .bar-menu li a.v-list-item--active {
+        color: #CE8714;
+        border-bottom: 3px solid #CE8714;
+    }
+    .bar-menu li a.v-list-item--link:before {
+        background: none;
+    }
+    .bar-menu li a.v-list-item {
+        min-height: unset;
     }
 </style >
