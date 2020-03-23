@@ -13,11 +13,12 @@
     </v-container >
 </template >
 
-<script >
+<script>
+    import { mapGetters } from 'vuex'
     import leftMenu from '@/layouts/left-menu'
     import restMenu from '@/components/bar/rest-menu'
     import myToast from '@/components/my-toast'
-    const axios = require('axios').default;
+
     export default {
         name: "index",
         components: {
@@ -25,27 +26,21 @@
             restMenu,
             myToast
         },
-        data(){
+        data () {
             return {
-                bars: [],
-                active: this.$route.params.id
+                activeBarId: this.$route.params.id
             }
         },
-        asyncData ({ params }) {
-            return axios.get(`http://185.22.61.189:1337/bars/`)
-                .then((res) => {
-                    return { bars: res.data }
-                })
+        async fetch ({ store }) {
+            await store.dispatch('fetchBars')
         },
-        created() {
+        created () {
             this.$router.back()
         },
-        computed:{
-            active_bar: function () {
-                const bar = this.bars.filter((item)=>{
-                    return item.id == this.active
-                })
-                return bar[0]
+        computed: {
+            ...mapGetters(['bars']),
+            active_bar () {
+                return this.bars.filter((item) => item.id === +this.activeBarId)[0]
             }
         },
         head () {

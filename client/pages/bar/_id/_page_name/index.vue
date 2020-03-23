@@ -27,8 +27,8 @@
                     :bar="active_bar"
                     :bars="bars"
                 ></component>
-            </div >
-        </div >
+            </div>
+        </div>
     </v-container>
 </template>
 
@@ -69,7 +69,7 @@
         computed: {
             ...mapGetters(['bars']),
             active_bar () {
-                return this.bars.filter(item => item.id == this.barActiveId)[0]
+                return this.bars.filter(item => item.id === +this.barActiveId)[0]
             },
             currentPageComponent () {
                 return this.currentPage = this.$route.params.page_name + 'Component'

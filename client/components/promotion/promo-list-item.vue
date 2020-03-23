@@ -8,11 +8,11 @@
                         :class="`elevation-${hover ? 12 : 0}`"
                         :to="'/promotion/'+promo.id"
                 >
-                    <v-img :src="'http://185.22.61.189:1337'+promo.preview.url"
+                    <v-img :src="getApiBaseUrl + promo.preview.url"
                            alt=""
                            width="100%"
-
-                           class="" ></v-img >
+                           class=""
+                    ></v-img >
                     <div class="pb-2 bold pt-4" >{{promo.name}}</div >
                     <div class="promotion_description pb-3" >
                         <span v-html="promo.short_description"></span>
@@ -23,16 +23,26 @@
     </v-col >
 </template >
 
-<script >
+<script>
+    import { mapGetters } from 'vuex'
+
     export default {
         name: "promo-list-item",
-        props:['promo'],
+        props: {
+            promo: {
+                type: Object,
+                required: true
+            }
+        },
         data(){
             return{
                 promotion:{
-                    id:1
+                    id: 1
                 }
             }
+        },
+        computed: {
+            ...mapGetters(['getApiBaseUrl'])
         }
     }
 </script >

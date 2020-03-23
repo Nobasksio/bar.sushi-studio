@@ -7,37 +7,31 @@
                 <h1 class="bold">
                     Акции
                 </h1>
-                <promo-list :promos="promos"></promo-list>
+                <promo-list :promos="getPromotions"></promo-list>
             </div >
             </v-container>
         </div >
     </v-container >
 </template >
 
-<script >
-    import leftMenu from '../../layouts/left-menu'
-    import restMenu from '../../components/bar/rest-menu'
-    import myToast from '../../components/my-toast'
-    import promoList from '../../components/promotion/promo-list'
-    const axios = require('axios').default;
+<script>
+    import { mapGetters } from 'vuex'
+    import leftMenu from '@/layouts/left-menu'
+    import myToast from '@/components/my-toast'
+    import promoList from '@/components/promotion/promo-list'
+
     export default {
         name: "index",
         components: {
             leftMenu,
-            restMenu,
             myToast,
             promoList
         },
-        data () {
-            return {
-                promos:[]
-            }
+        async fetch ({ store }) {
+            await store.dispatch('fetchPromotions')
         },
-        asyncData ({ params }) {
-            return axios.get(`http://185.22.61.189:1337/promotions`)
-                .then((res) => {
-                    return { promos: res.data }
-                })
+        computed: {
+            ...mapGetters(['getPromotions'])
         },
         head () {
             return {
@@ -48,8 +42,7 @@
                     { hid: 'description', name: 'description', content: ' Акции в уютные японские суши бары в Иркутске. Вкусная атмосфера классической и современной японии. Японская кухня, бизнес-ланч, Роллы, суши, сеты. ' }
                 ]
             }
-        },
-
+        }
     }
 </script >
 

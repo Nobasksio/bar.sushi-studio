@@ -6,9 +6,9 @@ export default {
         bars: []
     },
     actions: {
-        async fetchBars ({ commit, getters }) {
+        async fetchBars ({ commit, getters }, param = '') {
             try {
-                const bars = await axios.get(`${getters.getApiBaseUrl}/bars/`);
+                const bars = await axios.get(`${getters.getApiBaseUrl}/bars${param}`);
                 const result = await bars.data;
                 commit('setBars', result);
             } catch (e) {

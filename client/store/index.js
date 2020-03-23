@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 import bar from './modules/bar'
+import feedback from './modules/feedback'
+import promotion from './modules/promotion'
 
 const store = () => new Vuex.Store({
    state: {
@@ -17,7 +19,7 @@ const store = () => new Vuex.Store({
       getApiBaseUrl: state => state.ApiBaseUrl
    },
    modules: {
-      bar
+      bar, feedback, promotion
    }
 });
 

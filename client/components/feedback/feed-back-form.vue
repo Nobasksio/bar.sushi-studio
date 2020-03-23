@@ -82,8 +82,9 @@
     </v-container >
 </template >
 
-<script >
-    const axios = require('axios').default;
+<script>
+    import { mapActions } from 'vuex'
+
     export default {
         name: "feed-back-form",
         props:['bars'],
@@ -111,25 +112,21 @@
             }
         },
         methods:{
-            save_feed(){
-                this.feedback.rate = "_"+this.feedback.rate
-                this.loading = true
-                axios.post(`http://185.22.61.189:1337/feedbacks/`,
-                    this.feedback
-                    )
-                .then((res) => {
-                    console.log()
-                    this.feedback.rate = this.feedback.rate.substr(1,1)
-
-                    this.sent = true
-                    this.loading = false
-                })
-                    .catch((error) => {
-
-                        this.loading = false
-                        this.error = true
-                    });
-
+            ...mapActions(['sendFeedback']),
+            save_feed () {
+                this.feedback.rate = "_" + this.feedback.rate;
+                this.loading = true;
+                sendFeedback(this.feedback)
+                    .then(() => {
+                        this.feedback.rate = this.feedback.rate.substr(1,1);
+                        this.sent = true;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.loading = false;
+                        this.error = true;
+                        throw error
+                    })
             }
         },
         computed:{

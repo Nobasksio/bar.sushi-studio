@@ -36,7 +36,7 @@
 </template >
 
 <script >
-    import feedbackAnswer from '../../components/feedback/feedback-answer'
+    import feedbackAnswer from '@/components/feedback/feedback-answer'
 
     export default {
         name: "feedback-item",
